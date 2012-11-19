@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <SocialIntegration>
     <messages>
-      <createdBy>a été créé par</createdBy>
-      <editedBy>a été édité par</editedBy>
-      <system>le système</system>
-      <readmore>...Lire la suite.</readmore>
+		<createdBy>was created by</createdBy>
+		<editedBy>was edited by</editedBy>
+		<system>the system</system>
+		<readmore>...Read More.</readmore>
     </messages>
     <publicationStates>
-      <archived>Archivé</archived>
-      <obsolete>Obsolète</obsolete>
-      <unpublished>Non Publié</unpublished>
-      <draft>Brouillon</draft>
-      <pending>En attente</pending>
-      <approved>Approuvé</approved>
-      <inreview>En revue</inreview>
-      <staged>Prêt à publier</staged>
-      <published>Publié</published>
-      <live>Publié</live>
+		<archived>Archivé-test</archived>
+		<obsolete>Obsolete</obsolete>
+		<unpublished>Unpublished</unpublished>
+		<draft>Draft</draft>
+		<pending>Pending</pending>
+		<approved>Approved</approved>
+		<inreview>In Review</inreview>
+		<staged>Staged</staged>
+		<published>Published</published>
+		<live>Published</live>
     </publicationStates>
   </SocialIntegration>
 </bundle>
