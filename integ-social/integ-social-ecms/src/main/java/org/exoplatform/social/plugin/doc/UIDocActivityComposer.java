@@ -42,6 +42,7 @@ import org.exoplatform.social.webui.composer.UIComposer;
 import org.exoplatform.social.webui.composer.UIComposer.PostContext;
 import org.exoplatform.social.webui.profile.UIUserActivitiesDisplay;
 import org.exoplatform.social.webui.space.UISpaceActivitiesDisplay;
+import org.exoplatform.social.webui.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -226,7 +227,7 @@ public class UIDocActivityComposer extends UIActivityComposer implements UISelec
     IdentityManager identityManager = uiComposer.getApplicationComponent(IdentityManager.class);
 
     SpaceService spaceSrv = uiComposer.getApplicationComponent(SpaceService.class);
-    Space space = spaceSrv.getSpaceByUrl(SpaceUtils.getSpaceUrl());
+    Space space = spaceSrv.getSpaceByUrl(Utils.getSpaceUrlByContext());
 
     Identity spaceIdentity = identityManager.getOrCreateIdentity(SpaceIdentityProvider.NAME,space.getName(),false);
     String remoteUser = requestContext.getRemoteUser();
