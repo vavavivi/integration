@@ -17,13 +17,6 @@
 
 @Application
 @Portlet
-@Assets(
-    scripts = {
-        @Script(id = "jquery", src = "js/common/jquery-1.8.3.js", location = AssetLocation.SERVER),
-        @Script(id = "quicksearch", src = "quicksearch.js"),
-        @Script(id = "quicksearch-setting", src = "quicksearch-setting.js")
-    }     
-)
 package org.exoplatform.commons.quicksearch;
 
 import juzu.Application;

@@ -37,6 +37,11 @@
         <div class="controls">
           <ul id="lstSearchInOptions"></ul>
         </div>
+        
+	      <input type="hidden" id="everythingSearchSettings" value="${everything}"/>
+	      <input type="hidden" id="alertOkSearchSettings" value="${alertOk}"/>
+	      <input type="hidden" id="alertNotOkSearchSettings" value="${alertNotOk}"/>
+        
       </div>
     </div>
 

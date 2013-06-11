@@ -17,13 +17,6 @@
 
 @Application
 @Portlet
-@Assets(
-    scripts = {
-            @Script(id = "jquery", src = "js/common/jquery-1.8.3.js", location = AssetLocation.SERVER),
-        @Script(id = "search.js", src = "search.js"),
-        @Script(id = "search-setting.js", src = "search-setting.js")
-    }  
-)
 package org.exoplatform.commons.unifiedsearch;
 
 import juzu.Application;

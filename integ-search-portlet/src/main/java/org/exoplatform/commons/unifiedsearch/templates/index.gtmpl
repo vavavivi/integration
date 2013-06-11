@@ -60,7 +60,3 @@
       </div>
   </div>
 </div>
-
-<script>
-  initSearch();
-</script>

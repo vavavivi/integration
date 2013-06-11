@@ -1,9 +1,8 @@
+// Function to be called when the search setting template is ready
+(function($){
 
-// Function to be called when the quick search setting template is ready
-function initQuickSearchSetting(allMsg,alertOk,alertNotOk){
-  jQuery.noConflict();
+function initSearchSetting(allMsg,alertOk,alertNotOk){
 
-  (function($){
     var CONNECTORS; //all registered SearchService connectors
     var CHECKBOX_TEMPLATE = "\
       <div class='control-group'> \
@@ -35,14 +34,17 @@ function initQuickSearchSetting(allMsg,alertOk,alertNotOk){
 
     // Call REST service to save the setting
     $("#btnSave").click(function(){
-      var jqxhr = $.post("/rest/search/setting/quicksearch", {
+      //var url = "/rest/search/setting/"+$("#resultsPerPage").val()+"/"+getSelectedTypes()+"/"+$("#searchCurrentSiteOnly").is(":checked").toString()+"/"+$("#hideSearchForm").is(":checked").toString()+"/"+$("#hideFacetsFilter").is(":checked").toString();      
+      var jqxhr = $.post("/rest/search/setting", {
         resultsPerPage: $("#resultsPerPage").val(),
         searchTypes: getSelectedTypes(),
-        searchCurrentSiteOnly: $("#searchCurrentSiteOnly").is(":checked")
+        searchCurrentSiteOnly: $("#searchCurrentSiteOnly").is(":checked"),
+        hideSearchForm: $("#hideSearchForm").is(":checked"),
+        hideFacetsFilter: $("#hideFacetsFilter").is(":checked")
       });
 
       jqxhr.complete(function(data) {
-        alert("ok"==data.responseText?alertOk:alertNotOk+data.responseText);
+        alert("ok"==data.responseText?"Your setting has been saved.":"Problem occurred when saving your setting: "+data.responseText);
       });
     });
 
@@ -77,8 +79,8 @@ function initQuickSearchSetting(allMsg,alertOk,alertNotOk){
       });
       $("#lstSearchInOptions").html(searchInOpts.join(""));
 
-      // Display the previously saved (or default) quick search setting
-      $.getJSON("/rest/search/setting/quicksearch", function(setting){
+      // Display the previously saved (or default) search setting
+      $.getJSON("/rest/search/setting", function(setting){
         if(-1 != $.inArray("all", setting.searchTypes)) {
           $(":checkbox[name='searchInOption']").attr('checked', true);
         } else {
@@ -91,10 +93,14 @@ function initQuickSearchSetting(allMsg,alertOk,alertNotOk){
         }
         $("#resultsPerPage").val(setting.resultsPerPage);
         $("#searchCurrentSiteOnly").attr('checked', setting.searchCurrentSiteOnly);
+        $("#hideSearchForm").attr('checked', setting.hideSearchForm);
+        $("#hideFacetsFilter").attr('checked', setting.hideFacetsFilter);
       });
 
     });
-  })(jQuery);
-
-  $ = jQuery; //undo .conflict();
-}
+	}
+var allMsg = document.getElementById("everythingSearchSettings").value;
+var alertOkSearch = document.getElementById("alertOkSearchSettings").value;
+var alertNotOk = document.getElementById("alertNotOkSearchSettings").value;
+initSearchSetting(allMsg,alertOkSearch,alertNotOk);
+})($);
