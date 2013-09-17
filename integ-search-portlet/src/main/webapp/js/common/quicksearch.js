@@ -1,6 +1,6 @@
 (function($){
 // Function to be called when the quick search template is ready
-function initQuickSearch(portletId,seeAllMsg, noResultMsg, searching) {
+window.initQuickSearch = function initQuickSearch(portletId,seeAllMsg, noResultMsg, searching) {
   
     //*** Global variables ***
     var CONNECTORS; //all registered SearchService connectors
@@ -463,14 +463,10 @@ function initQuickSearch(portletId,seeAllMsg, noResultMsg, searching) {
 
   //$ = jQuery; //undo .conflict();
 }
-var portletId = document.getElementById("portletIdQuickSearch").value;
-var seeAllMsg = document.getElementById("seeAllQuickSearch").value;
-var noResultMsg = document.getElementById("noResultsQuickSearch").value;
-var searching = document.getElementById("searchingQuickSearch").value;
-initQuickSearch(portletId,seeAllMsg, noResultMsg, searching);
+
 
 //Function to be called when the quick search setting template is ready
-function initQuickSearchSetting(allMsg,alertOk,alertNotOk){  
+window.initQuickSearchSetting = function(allMsg,alertOk,alertNotOk){  
   
     var CONNECTORS; //all registered SearchService connectors
     var CHECKBOX_TEMPLATE = "\
@@ -563,6 +559,5 @@ function initQuickSearchSetting(allMsg,alertOk,alertNotOk){
 
     });
 }
-
 })($);
 

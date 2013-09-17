@@ -20,7 +20,4 @@
 package org.exoplatform.commons.unifiedsearch;
 
 import juzu.Application;
-import juzu.asset.AssetLocation;
-import juzu.plugin.asset.Assets;
-import juzu.plugin.asset.Script;
 import juzu.plugin.portlet.Portlet;

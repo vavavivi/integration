@@ -54,4 +54,8 @@ function initSearchAdmin() {
       });
     });
 	}
+
+
+  initSearchAdmin();
+
 })($);

@@ -53,5 +53,7 @@
 </div>
 
 <script>
+window.require(["PORTLET/unified-search/UnifiedsearchPortlet"], function() {
   initSearchSetting("${everything}","${alertOk}","${alertNotOk}");
+});  
 </script>

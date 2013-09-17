@@ -1,6 +1,6 @@
 (function($){
 
-function initSearch() {
+window.initSearch = function initSearch() {
 
     //*** Global variables ***
     var CONNECTORS; //all registered SearchService connectors
@@ -444,7 +444,7 @@ function initSearch() {
         $(":checkbox[name='contentType'][value='all']").attr('checked', false); //uncheck All Content Types
       }
 
-      search(); //perform search again to update the results
+      window.search = search(); //perform search again to update the results
     });
 
 
@@ -459,18 +459,18 @@ function initSearch() {
         $(":checkbox[name='site'][value='all']").attr('checked', false); //uncheck All Sites
       }
 
-      search(); //perform search again to update the results
+      window.search = search(); //perform search again to update the results
     });
 
 
     $("#btnSearch").click(function(){
-      search();
+      window.search = search();
     });
 
 
     $("#txtQuery").keyup(function(e){
       var keyCode = e.keyCode || e.which;
-      if(13==keyCode) search();
+      if(13==keyCode) window.search = search();
     });
 
 
@@ -563,7 +563,7 @@ function initSearch() {
 
         if(setting.searchCurrentSiteOnly) { //search without site filter
           $("#siteFilter").hide();
-          //search();
+          //window.search = search();
           NUM_RESULTS_RENDERED = 0;          
           getFromServer(function(){
             renderCachedResults();
@@ -581,7 +581,7 @@ function initSearch() {
                 $(":checkbox[name='site']").attr('checked', true);  //check all sites by default
               }
             }
-            //search();
+            //window.search = search();
             NUM_RESULTS_RENDERED = 0;
             getFromServer(function(){
               renderCachedResults();
@@ -593,7 +593,10 @@ function initSearch() {
     });
 }
 
-function initSearchSetting(allMsg,alertOk,alertNotOk){
+
+//js for search setting
+window.initSearchSetting = function initSearchSetting(allMsg,alertOk,alertNotOk){
+
     var CONNECTORS; //all registered SearchService connectors
     var CHECKBOX_TEMPLATE = "\
       <div class='control-group'> \
@@ -690,8 +693,6 @@ function initSearchSetting(allMsg,alertOk,alertNotOk){
 
     });
 }
-
-initSearch();
 
 })($);
   

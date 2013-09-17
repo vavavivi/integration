@@ -15,3 +15,9 @@
 	</a>
 	<div id="quickSearchResult-${portletId}" class="uiQuickSearchResult" ></div>
 </div>
+
+	<script>
+	  window.require(["PORTLET/unified-search/QuicksearchPortlet"], function() {
+		initQuickSearch("${portletId}","${seeAll}", "${noResults}", "${searching}");	  
+	  });
+	</script>
