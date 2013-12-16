@@ -17,6 +17,10 @@ import org.exoplatform.services.log.Log;
 import org.exoplatform.services.security.ConversationState;
 import org.exoplatform.services.security.IdentityConstants;
 import org.exoplatform.services.security.MembershipEntry;
+import org.exoplatform.social.common.service.ProcessContext;
+import org.exoplatform.social.common.service.SocialServiceContext;
+import org.exoplatform.social.common.service.impl.ProcessorContextImpl;
+import org.exoplatform.social.common.service.impl.SocialServiceContextImpl;
 import org.exoplatform.social.core.activity.model.ExoSocialActivity;
 import org.exoplatform.social.core.activity.model.ExoSocialActivityImpl;
 import org.exoplatform.social.core.identity.model.Identity;
@@ -27,6 +31,8 @@ import org.exoplatform.social.core.manager.IdentityManager;
 import org.exoplatform.social.core.space.model.Space;
 import org.exoplatform.social.core.space.spi.SpaceService;
 import org.exoplatform.social.core.storage.SpaceStorageException;
+import org.exoplatform.social.core.storage.impl.StorageUtils;
+import org.exoplatform.social.core.storage.streams.SocialChromatticAsyncProcessor;
 import org.exoplatform.wiki.ext.impl.WikiUIActivity.CommentType;
 import org.exoplatform.wiki.mow.api.Page;
 import org.exoplatform.wiki.mow.api.WikiNodeType;
@@ -63,6 +69,12 @@ public class WikiSpaceActivityPublisher extends PageWikiListener {
   public static final String WIKI_PAGE_NAME      = "wiki";
   
   public static final String WIKI_PAGE_VERSION   = "version";
+
+  public static final String OWNER = "OWNER";
+
+  public static final String ACTIVITY = "ACTIVITY";
+
+  public static final String ADD_NEW_PAGE_ACTIVITY = "AddNewPageActivity";
 
   private static final int   EXCERPT_LENGTH    = 140;
 
@@ -141,7 +153,23 @@ public class WikiSpaceActivityPublisher extends PageWikiListener {
     
     // Save activity
     if (isNewActivity) {
-      activityManager.saveActivityNoReturn(ownerStream, activity);
+      SocialServiceContext ctx = SocialServiceContextImpl.getInstance();
+      ProcessorContextImpl processCtx = new ProcessorContextImpl(ADD_NEW_PAGE_ACTIVITY, ctx);
+      processCtx.setProperty(OWNER, ownerStream);
+      processCtx.setProperty(ACTIVITY, activity);
+
+      try {
+        if(ctx.isAsync()) {
+          StorageUtils.persist();
+          //
+          ctx.getServiceExecutor().async(WikiSpaceActivityPublisher.saveActivityNoReturn(), processCtx);
+        } else {
+          ctx.getServiceExecutor().execute(WikiSpaceActivityPublisher.saveActivityNoReturn(), processCtx);
+        }
+
+      } finally {
+        LOG.debug(processCtx.getTraceLog());
+      }
     } else {
       activityManager.updateActivity(activity);
     }
@@ -404,5 +432,26 @@ public class WikiSpaceActivityPublisher extends PageWikiListener {
     if(page != null) {
       saveActivity(wikiType, wikiOwner, pageId, page, wikiUpdateType);
     }
+  }
+
+  /**
+   * Processeor save activity no return by Asynchronous
+   *
+   * @return SocialChromatticAsyncProcessor
+   */
+  public static SocialChromatticAsyncProcessor saveActivityNoReturn() {
+    return new SocialChromatticAsyncProcessor(SocialServiceContextImpl.getInstance()) {
+
+      @Override
+      protected ProcessContext execute(ProcessContext processContext) throws Exception {
+        ActivityManager activityManager =
+                (ActivityManager)PortalContainer.getInstance().getComponentInstanceOfType(ActivityManager.class);
+        activityManager.saveActivityNoReturn(
+                (Identity)processContext.getProperty(OWNER),
+                (ExoSocialActivity)processContext.getProperty(ACTIVITY));
+
+        return processContext;
+      }
+    };
   }
 }
