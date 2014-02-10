@@ -118,7 +118,17 @@ public class WikiSpaceActivityPublisher extends PageWikiListener {
     templateParams.put(PAGE_OWNER_KEY, wikiOwner);
     templateParams.put(PAGE_TYPE_KEY, wikiType);
     templateParams.put(PAGE_TITLE_KEY, page.getTitle());
-    String pageURL = (page.getURL() == null) ? (spaceUrl != null ? (spaceUrl + "/" + WIKI_PAGE_NAME) : "") : page.getURL();
+    String [] splitOldPageURL = page.getURL().split("/");
+    String oldPageId =splitOldPageURL[splitOldPageURL.length - 1];
+    String pageURL = "";
+    if(oldPageId.equals(PAGE_ID_KEY)){
+      pageURL = (page.getURL() == null) ? (spaceUrl != null ? (spaceUrl + "/" + WIKI_PAGE_NAME) : "") : page.getURL();
+    }
+    else{
+      String newPageURL = page.getURL().replaceAll(oldPageId, pageId);
+      pageURL = (page.getURL() == null) ? (spaceUrl != null ? (spaceUrl + "/" + WIKI_PAGE_NAME) : "") : newPageURL;
+    }
+    
     templateParams.put(URL_KEY, pageURL);
     int versionsTotal = page.getVersionableMixin().getVersionHistory().getChildren().size() - 1;
     templateParams.put(WIKI_PAGE_VERSION, String.valueOf(versionsTotal));
