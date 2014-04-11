@@ -149,8 +149,8 @@ public class ForumActivityBuilder {
     }
     String str = StringEscapeUtils.unescapeHtml(TransformHTML.cleanHtmlCode(sb.toString(), null)).trim();
     
-    //
-    return trunc(str.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("BR_", "<br/>"), NUMBER_CHARS, tab.length > NUMBER_OF_LINES);
+    String truncStr = trunc(str, NUMBER_CHARS, tab.length > NUMBER_OF_LINES);
+    return truncStr.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("BR_", "<br/>") ;
   }
   
   /**
