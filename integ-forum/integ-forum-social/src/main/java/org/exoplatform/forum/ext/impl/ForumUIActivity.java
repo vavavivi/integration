@@ -375,11 +375,9 @@ public class ForumUIActivity extends BaseKSActivity {
     if (activity.getTitleId() != null) {
       Locale userLocale = requestContext.getLocale();
       activity = i18NActivityProcessor.processKeys(activity, userLocale);
-      String title = activity.getTitle().replace("&amp;", "&");
-      activity.setTitle(title);
+      activity.setTitle(activity.getTitle());
       if (activity.isComment() == false) {
-        String body = activity.getBody().replace("&amp;", "&");
-        activity.setBody(body);
+        activity.setBody(activity.getBody());
       }
     }
     return activity;

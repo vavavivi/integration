@@ -346,7 +346,7 @@
 						  def id = Utils.getIdentityManager().getIdentity(it.userId);
 						  commenterFullName = id.profile.fullName;
 						  commenterProfileUri = LinkProvider.getUserProfileUri(id.getRemoteId());
-						  commentMessage = it.title;
+						  commentMessage = it.title.replace("&amp;", "&");
 						  commentPostedTime = uicomponent.getPostedTimeString(_ctx, it.postedTime);
 						  commenterAvatarImgSrc = id.profile.avatarUrl;
 						  if (!commenterAvatarImgSrc) commenterAvatarImgSrc = LinkProvider.PROFILE_DEFAULT_AVATAR_URL;
