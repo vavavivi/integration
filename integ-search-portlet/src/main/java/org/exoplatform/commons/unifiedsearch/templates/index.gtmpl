@@ -56,6 +56,17 @@
           <div id="showMore" class="showMore"><button type="button" class="btn" id="btnShowMore" value="Show More Results">${showmore}</button></div>
         </div>
 
+
+		<!-- ui-3285 -->
+		<div class="noResultPage uiBox">
+			<h3>No Result Found</h3>
+			<p>Your search <b>cloud</b> dis not match any content.
+			<br />
+			Try different keywords.
+			</p>
+		</div>
+		<!-- end ui-3285 -->
+		
       </div>
   </div>
 </div>
