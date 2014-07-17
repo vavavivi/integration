@@ -25,6 +25,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.social.core.activity.model.ExoSocialActivity;
+import org.exoplatform.social.core.identity.model.Identity;
 import org.exoplatform.social.core.processor.I18NActivityProcessor;
 import org.exoplatform.social.webui.activity.BaseUIActivity;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -98,6 +99,14 @@ public class ForumUIActivity extends BaseKSActivity {
     Map<String, String> templateParams = activity.getTemplateParams();
     if(templateParams != null && templateParams.containsKey(ForumActivityBuilder.POST_ID_KEY)) {
       return topicView.concat("/").concat(templateParams.get(ForumActivityBuilder.POST_ID_KEY));
+    }
+    return StringUtils.EMPTY;
+  }
+  
+  protected String getLastEditedUsernameByPostLink(ExoSocialActivity activity) {
+    Map<String, String> templateParams = activity.getTemplateParams();
+    if(templateParams != null && templateParams.containsKey(ForumActivityBuilder.POST_OWNER_KEY)) {
+      return templateParams.get(ForumActivityBuilder.POST_OWNER_KEY);
     }
     return StringUtils.EMPTY;
   }

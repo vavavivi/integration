@@ -28,6 +28,7 @@
   import org.exoplatform.social.webui.Utils;
   import org.exoplatform.social.core.service.LinkProvider;
   import org.exoplatform.forum.ext.impl.ForumSpaceActivityPublisher;
+  import org.exoplatform.social.core.identity.provider.OrganizationIdentityProvider;
 
   def pcontext = Util.getPortalRequestContext();
   
@@ -355,8 +356,9 @@
 					  }
 
 						def postLink = uicomponent.getViewPostLink(it);
-					  def id = Utils.getIdentityManager().getIdentity(it.userId);
-					  commenterFullName = id.profile.fullName;
+						String lastEditedUsername = uicomponent.getLastEditedUsernameByPostLink(it);											
+					  def id = Utils.getIdentityManager().getOrCreateIdentity(OrganizationIdentityProvider.NAME, lastEditedUsername, false);					  					  				  									  
+					  commenterFullName = id.profile.fullName;					  
 					  commenterProfileUri = LinkProvider.getUserProfileUri(id.getRemoteId());
 					  commentMessage = it.title;
 					  commentPostedTime = uicomponent.getPostedTimeString(_ctx, it.postedTime);
