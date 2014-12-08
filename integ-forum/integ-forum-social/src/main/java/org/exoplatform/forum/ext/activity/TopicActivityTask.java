@@ -89,8 +89,11 @@ public abstract class TopicActivityTask implements ActivityTask<ForumActivityCon
         //
         Identity poster = ForumActivityUtils.getIdentity(ctx.getTopic().getOwner());
         newActivity.setUserId(poster.getId());
+        newActivity.setStreamId(streamOwner.getId());
         
-        am.saveActivityNoReturn(streamOwner, newActivity);
+        if (ctx.isMustPersistToStorage()) {
+          am.saveActivityNoReturn(streamOwner, newActivity);
+        }
         
         return newActivity;
       } catch (Exception e) {

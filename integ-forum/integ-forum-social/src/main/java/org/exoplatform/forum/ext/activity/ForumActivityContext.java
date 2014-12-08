@@ -31,9 +31,9 @@ public class ForumActivityContext {
   private String categoryId;
   private String forumId;
   private String topicId;
-  
   private Topic topic;
   private Post post;
+  private boolean mustPersistToStorage = true;
 
   /**org.exoplatform.forum.service.Utils.CLOSE
   * org.exoplatform.forum.service.Utils.LOCK
@@ -46,12 +46,11 @@ public class ForumActivityContext {
   * org.exoplatform.forum.service.Utils.HIDDEN
   * */
   private int updateType;
-  
   private String toCategoryName;
   private String toForumName;
   private String[] removeActivities;
-  
   private Topic splitedTopic;
+  
   
   private PropertyChangeSupport pcs;
   
@@ -118,6 +117,27 @@ public class ForumActivityContext {
     ForumActivityContext ctx = new ForumActivityContext();
     ctx.post = post;
     return ctx;
+  }
+  
+  /** create ForumActivityContext for add post case*/
+  public static ForumActivityContext makeContextForAddPost(Post post, boolean mustPersistToStorage) {
+    ForumActivityContext ctx = new ForumActivityContext();
+    ctx.post = post;
+    ctx.mustPersistToStorage = mustPersistToStorage;
+    return ctx;
+  }
+  
+  /**
+   * The signature tells the activity must be persisted to JCR or not.
+   * 
+   * @param mustPersistToStorage
+   */
+  public void setMustPersistToStorage(boolean mustPersistToStorage) {
+    this.mustPersistToStorage = mustPersistToStorage;
+  }
+  
+  public boolean isMustPersistToStorage() {
+    return mustPersistToStorage;
   }
   
   public void setPost(Post post) {

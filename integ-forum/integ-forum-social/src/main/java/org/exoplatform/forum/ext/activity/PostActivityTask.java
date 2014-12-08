@@ -22,6 +22,7 @@ import org.exoplatform.services.log.Log;
 import org.exoplatform.social.core.activity.model.ExoSocialActivity;
 import org.exoplatform.social.core.identity.model.Identity;
 import org.exoplatform.social.core.manager.ActivityManager;
+import org.exoplatform.social.core.storage.impl.StorageUtils;
 
 import java.util.Map;
 
@@ -79,24 +80,18 @@ public abstract class PostActivityTask implements ActivityTask<ForumActivityCont
       try {
         Topic topic = ForumActivityUtils.getTopic(ctx);
         ctx.setTopic(topic);
+        //don't need save the activity to storage, waiting the comment to makes sure both of them having the same session.
+        //- safer for create activity.
+        //- avoid the conflict when creates the activity and comment in the Post case with Activity empty.
+        ctx.setMustPersistToStorage(false);
         
         //FORUM_33 case: update topic activity's number of reply 
         ExoSocialActivity topicActivity = ForumActivityUtils.getActivityOfTopic(ctx);
-        //
-        if(topicActivity == null) {
-          return null;
-        }
+
         Map<String, String> templateParams = topicActivity.getTemplateParams();
         templateParams.put(ForumActivityBuilder.TOPIC_POST_COUNT_KEY, "" + topic.getPostCount());
         
         ActivityManager am = ForumActivityUtils.getActivityManager();
-        
-        //
-        if (am.getActivity(topicActivity.getId()) == null) {
-          return null;
-        }
-        
-        am.updateActivity(topicActivity);
         
         //add new comment with title: first 3 lines
         ExoSocialActivity newComment = ForumActivityBuilder.createActivityComment(ctx.getPost(), ctx);
@@ -107,9 +102,27 @@ public abstract class PostActivityTask implements ActivityTask<ForumActivityCont
         newComment.setUserId(poster.getId());
         
         //
-        am.saveComment(topicActivity, newComment);
-        
-        
+        if (topicActivity == null || topicActivity.getId() == null) {
+          am.saveComment(topicActivity, newComment);
+          //take back activityId to the topic
+          ForumActivityUtils.takeActivityBack(ctx.getTopic(), topicActivity);
+        } else {
+          boolean hasActivity = ForumActivityUtils.getActivityStorageImpl().hasActivity(topicActivity.getId());
+          
+          if (!hasActivity) {
+            while(true) {
+              Thread.sleep(100);
+              StorageUtils.refreshSession();
+              hasActivity = ForumActivityUtils.getActivityStorageImpl().hasActivity(topicActivity.getId());
+              if (hasActivity) {
+                break;
+              }
+            }
+          }
+          
+          am.updateActivity(topicActivity);
+          am.saveComment(topicActivity, newComment);
+        }
         return newComment;
       } catch (Exception e) {
         LOG.warn("Can not record comment when add post : " + ctx.getPost().getId());

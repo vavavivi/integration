@@ -154,9 +154,11 @@ public class ForumTaskManager implements Startable {
     Queue<Task<ForumActivityContext>> tmp = tasks;
     tasks = null;
     Queue<Task<ForumActivityContext>> processTasks = new LinkedBlockingQueue<Task<ForumActivityContext>>();
-    for (Task<ForumActivityContext> forumTask : tmp) {
-      if (!processTasks.contains(forumTask)) {
-        processTasks.add(forumTask);
+    if (tmp != null) {
+      for (Task<ForumActivityContext> forumTask : tmp) {
+        if (!processTasks.contains(forumTask)) {
+          processTasks.add(forumTask);
+        }
       }
     }
     //

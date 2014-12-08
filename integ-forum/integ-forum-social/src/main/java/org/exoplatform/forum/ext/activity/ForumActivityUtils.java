@@ -18,6 +18,7 @@ package org.exoplatform.forum.ext.activity;
 
 import java.util.Map;
 
+import org.exoplatform.commons.utils.CommonsUtils;
 import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.forum.common.CommonUtils;
@@ -37,6 +38,7 @@ import org.exoplatform.social.core.manager.IdentityManager;
 import org.exoplatform.social.core.space.SpaceUtils;
 import org.exoplatform.social.core.space.model.Space;
 import org.exoplatform.social.core.space.spi.SpaceService;
+import org.exoplatform.social.core.storage.impl.ActivityStorageImpl;
 
 /**
  * Created by The eXo Platform SAS
@@ -202,6 +204,9 @@ public class ForumActivityUtils {
    */
   public static ExoSocialActivity getActivityOfTopic(ForumActivityContext ctx) {
     ForumService fs = ForumActivityUtils.getForumService();
+    if (ctx.getTopic() == null) {
+      
+    }
     String activityId = fs.getActivityIdForOwnerId(ctx.getTopic().getId());
     
     ActivityManager am = ForumActivityUtils.getActivityManager();
@@ -272,8 +277,11 @@ public class ForumActivityUtils {
     TopicActivityTask task = TopicActivityTask.ADD_TOPIC;
     ExoSocialActivity got = ActivityExecutor.execute(task, ctx);
     
-    //
-    ForumActivityUtils.takeActivityBack(ctx.getTopic(), got);
+    //make sure the activity has been created and getID() must be keep for the topic
+    if (ctx.isMustPersistToStorage() && got.getId() != null) {
+      ForumActivityUtils.takeActivityBack(ctx.getTopic(), got);
+    }
+    
     
     return got;
   }
@@ -325,6 +333,10 @@ public class ForumActivityUtils {
       activityManager = (ActivityManager) PortalContainer.getInstance().getComponentInstanceOfType(ActivityManager.class);
     }
     return activityManager;
+  }
+  
+  public static ActivityStorageImpl getActivityStorageImpl() {
+    return CommonsUtils.getService(ActivityStorageImpl.class);
   }
   
   public static IdentityManager getIdentityManager() {

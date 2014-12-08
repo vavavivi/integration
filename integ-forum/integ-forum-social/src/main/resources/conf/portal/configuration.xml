@@ -11,7 +11,7 @@
       </value-param>
       <value-param>
         <name>maxPersistSize</name> <!-- Max number of task to process in period time -->
-        <value>${integ.forum.ForumTaskManager.maxPersistSize:10}</value>
+        <value>${integ.forum.ForumTaskManager.maxPersistSize:100}</value>
       </value-param>
       <value-param>
         <name>periodTime</name><!-- The time to repeat interval call process task -->
