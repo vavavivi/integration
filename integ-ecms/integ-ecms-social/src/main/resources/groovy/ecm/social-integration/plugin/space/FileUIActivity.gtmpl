@@ -238,33 +238,6 @@
 </script>
 
 <div class="activityStream uiContentActivity fileActivity" id="activityContainer${activity.id}">
-<%
-if(currentNode.isLocked()){
-	def _modelTitle = _ctx.appRes("UIPopupWindow.title.UIReadOnlyFileConfirmMessage");
-	def _modelMessage = _ctx.appRes("UIPopupMenu.msg.lock-node-read-only");
-			_modelMessage = _modelMessage.replace("{0}", currentNode.getLock().getLockOwner());
-	def _modelReadOnlyBtn = _ctx.appRes("UIConfirmMessage.label.ReadOnly");
-	def _modelCancelBtn = _ctx.appRes("UIConfirmMessage.label.Cancel");
-%>
-<div class="modal-backdrop fade in"></div>
-	<div class="modal fade" id="model-${activity.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a href="javascript:void(0)"  class="close" data-dismiss="modal" aria-label="Close"><i class="uiIconClose" aria-hidden="true"></i></a>
-					<h4 class="modal-title" id="myModalLabel">$_modelTitle</h4>
-				</div>
-				<div class="modal-body">
-					$_modelMessage
-				</div>
-				<div class="modal-footer center">
-					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="eXo.ecm.OpenDocumentInOffice.openDocument('$binarySrc','${activity.id}');">$_modelReadOnlyBtn</button>
-					<button type="button" class="btn">$_modelCancelBtn</button>
-				</div>
-			</div>
-		</div>
-	</div>
-<%}%>
 	<% uiform.begin() %>
 	<div class="activityTimeLine pull-left">
 		<div class="activityAvatar avatarCircle">
@@ -424,14 +397,7 @@ if(currentNode.isLocked()){
 					</ul>  
 				 <% }%>	
 					 <ul class="pull-left statusAction">
-						<% if(currentNode.isLocked()){ %>
-            <li>
-							<a status="locked" href="javascript:void(0);" onclick="eXo.ecm.OpenDocumentInOffice.openLockedDocument('$binarySrc', '$activity.id');" href="javascript:void(0);">
-							<i class="uiIcon16x16FileDefault uiIconEcmsOpenDocument_$activity.id"></i>&nbsp;Open</a>
-						</li>
-						<%}else{%>
-             <li><a href="$binarySrc"><i class="uiIcon16x16FileDefault uiIconEcmsOpenDocument_$activity.id"></i>&nbsp;Open</a></li>
-						<%}%>
+            <li><a href="<%=uicomponent.event("OpenFile")%>"><i class="uiIcon16x16FileDefault uiIconEcmsOpenDocument_$activity.id"></i>&nbsp;Open</a></li>
 						<li><a href="$contentActivityUri"><i class="uiIconWatch uiIconLightGray"></i>&nbsp;<%=_ctx.appRes("SocialIntegration.view");%></a></li>
 						<li><a href="$downloadLink"><i class="uiIconDownload uiIconLightGray"></i>&nbsp;<%=_ctx.appRes("SocialIntegration.download");%></a></li>
 					 </ul>

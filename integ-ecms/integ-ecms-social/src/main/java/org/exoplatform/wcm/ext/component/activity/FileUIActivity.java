@@ -28,8 +28,10 @@ import javax.imageio.stream.ImageInputStream;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.ValueFormatException;
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +40,8 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.xml.PortalContainerInfo;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIOpenDocumentForm;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.jcrext.activity.ActivityCommonService;
 import org.exoplatform.services.log.ExoLogger;
@@ -84,6 +88,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = BaseUIActivity.SetCommentListStatusActionListener.class),
         @EventConfig(listeners = BaseUIActivity.PostCommentActionListener.class),
         @EventConfig(listeners = BaseUIActivity.DeleteActivityActionListener.class),
+        @EventConfig(listeners = FileUIActivity.OpenFileActionListener.class),
         @EventConfig(listeners = BaseUIActivity.DeleteCommentActionListener.class) }),
     @ComponentConfig(
        type = UIPopupWindow.class, template = "system:/groovy/webui/core/UIPopupWindow.gtmpl",
@@ -616,4 +621,45 @@ public class FileUIActivity extends BaseUIActivity{
       event.getRequestContext().addUIComponentToUpdateByAjax(popupContainer);
     }
   }
+  
+  public static class OpenFileActionListener extends EventListener<FileUIActivity> {
+    public void execute(Event<FileUIActivity> event) throws Exception {
+      FileUIActivity fileUIActivity = event.getSource();
+      
+      HttpServletRequest httpServletRequest = Util.getPortalRequestContext().getRequest();
+      //String objId = event.getRequestContext().getRequestParameter(OBJECTID);
+
+      String repo = WCMCoreUtils.getRepository().getConfiguration().getName();
+      Node currentNode = fileUIActivity.getContentNode();
+      String ws = currentNode.getSession().getWorkspace().getName();
+      String nodePath = currentNode.getPath();
+      
+      String filePath = httpServletRequest.getScheme()+ "://" + httpServletRequest.getServerName() + ":"
+              +httpServletRequest.getServerPort() + "/"
+              + WCMCoreUtils.getRestContextName()+ "/private/jcr/" + repo + "/" + ws + nodePath;
+
+      if(currentNode.isLocked() || !PermissionUtil.canSetProperty(currentNode)){
+        String[] userLock = {currentNode.getLock().getLockOwner()};
+        final FileUIActivity docActivity = event.getSource();
+        final UIActivitiesContainer activitiesContainer = docActivity.getParent();
+        final PopupContainer popupContainer = activitiesContainer.getPopupContainer();
+
+        UIOpenDocumentForm uiOpenDocumentForm = event.getSource().createUIComponent(UIOpenDocumentForm.class, null, null);
+        uiOpenDocumentForm.setId("UIReadOnlyFileConfirmMessage");
+        uiOpenDocumentForm.setMessageKey("UIPopupMenu.msg.lock-node-read-only");
+        uiOpenDocumentForm.setArguments(userLock);
+        uiOpenDocumentForm.setFilePath(nodePath);
+        uiOpenDocumentForm.setWorkspace(ws);
+        uiOpenDocumentForm.setAbsolutePath(filePath);
+        popupContainer.activate(uiOpenDocumentForm, 800, 600, true);
+
+        event.getRequestContext().addUIComponentToUpdateByAjax(popupContainer);
+      }else{
+        event.getRequestContext().getJavascriptManager().require("SHARED/openDocumentInOffice")
+                .addScripts("eXo.ecm.OpenDocumentInOffice.openDocument('" + filePath + "', '" + ws + "', '" + nodePath + "');");
+      }
+    }
+    
+  }
+  
 }
