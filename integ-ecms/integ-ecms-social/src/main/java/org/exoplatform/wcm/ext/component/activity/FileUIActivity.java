@@ -638,7 +638,7 @@ public class FileUIActivity extends BaseUIActivity{
               +httpServletRequest.getServerPort() + "/"
               + WCMCoreUtils.getRestContextName()+ "/private/jcr/" + repo + "/" + ws + nodePath;
 
-      if(currentNode.isLocked() || !PermissionUtil.canSetProperty(currentNode)){
+      if(currentNode.isLocked()){
         String[] userLock = {currentNode.getLock().getLockOwner()};
         final FileUIActivity docActivity = event.getSource();
         final UIActivitiesContainer activitiesContainer = docActivity.getParent();
