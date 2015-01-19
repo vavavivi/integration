@@ -274,7 +274,12 @@
             </div>
           <%
             } else {
-              String classIcon = uicomponent.getCssClassIconFile(((title == null) ? dName : title), mimeType);
+               String classIcon;
+               if(mimeType.startsWith("exo_accessibleMedia")) {
+                classIcon = "uiIcon64x64Template"+mimeType;
+               } else {
+                classIcon = uicomponent.getCssClassIconFile(((title == null) ? dName : title), mimeType);
+               }
           %>
             <div class="clearfix isPreviewable">
               <div id="MediaContent${activity.id}" class="fileTypeContent">

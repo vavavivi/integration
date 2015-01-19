@@ -34,6 +34,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.wcm.core.NodeLocation;
+import org.exoplatform.services.wcm.core.NodetypeConstant;
 import org.exoplatform.web.application.JavascriptManager;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -111,6 +112,9 @@ public class UIDocViewer extends UIBaseNodePresentation {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
       String nodeType = getDocNode().getPrimaryNodeType().getName();
+      if(nodeType.equals(NodetypeConstant.EXO_SYMLINK)) {
+        nodeType = getDocNode().getProperty(NodetypeConstant.EXO_PRIMARYTYPE).getString();
+      }
       if(templateService.isManagedNodeType(nodeType)) {
         return templateService.getTemplatePathByUser(false, nodeType, userName);
       }

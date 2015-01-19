@@ -210,7 +210,8 @@ public class UIDocActivity extends BaseUIActivity {
       }
       
       UIDocViewer docViewer = popupContainer.createUIComponent(UIDocViewer.class, null, "DocViewer");
-      docViewer.docPath = docActivity.docPath;
+      final Node docNode = docActivity.getDocNode();
+      docViewer.docPath = Utils.getNodeSymLink(docNode).getPath();
       docViewer.repository = docActivity.repository;
       docViewer.workspace = docActivity.workspace;
 
@@ -433,7 +434,15 @@ public class UIDocActivity extends BaseUIActivity {
   private String getMimeType() {
     String mimeType = "";    
       try {
-        mimeType = getDocNode().getNode("jcr:content").getProperty("jcr:mimeType").getString();
+        Node node = getDocNode();
+        if (node.isNodeType(NodetypeConstant.EXO_SYMLINK)) {
+          node = Utils.getNodeSymLink(node);
+        }
+        if (node.isNodeType(NodetypeConstant.EXO_ACCESSIBLE_MEDIA)) {
+          mimeType = node.getPrimaryNodeType().getName().replaceAll(":", "_");
+        } else {
+          mimeType = node.getNode(NodetypeConstant.JCR_CONTENT).getProperty(NodetypeConstant.JCR_MIME_TYPE).getString();
+        }
       } catch (ValueFormatException e) {
         if (LOG.isDebugEnabled())
           LOG.debug(e);
@@ -446,6 +455,8 @@ public class UIDocActivity extends BaseUIActivity {
         if (LOG.isDebugEnabled())
           LOG.debug(e);
         return StringUtils.EMPTY;
+      } catch (Exception e) {
+        LOG.error("Unknown error when getting the real node from symlink", e);
       }
     return mimeType;
   }
