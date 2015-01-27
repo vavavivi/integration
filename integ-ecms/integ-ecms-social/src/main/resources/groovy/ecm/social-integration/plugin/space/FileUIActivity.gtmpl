@@ -184,7 +184,7 @@
 
 <%if (currentNode != null) {
 	  //ECMS declare variables - BEGIN
-	  activityContentTitle = uicomponent.getTitle(currentNode);
+	  activityContentTitle = uicomponent.getContentName();
 	  
 	  def uicontentpresentation = uicomponent.addChild(ContentPresentation.class, null, null);
 	  uicontentpresentation.setNode(currentNode);
