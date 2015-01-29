@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
+  <UISocialPopupWindow>
+    <title>
+      <UIReadOnlyFileConfirmMessage>Open Document Read-only</UIReadOnlyFileConfirmMessage>
+    </title>
+  </UISocialPopupWindow>
   <SocialIntegration>
     <titles>
       <fileSize>Kích thước Tệp</fileSize>
