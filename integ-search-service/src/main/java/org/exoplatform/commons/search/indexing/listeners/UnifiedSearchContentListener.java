@@ -34,16 +34,17 @@ public class UnifiedSearchContentListener extends Listener {
   @Override
   public void onEvent(Event event) throws Exception {
     if(indexingService != null) {
+      Map<String, Object> content = new HashMap<String, Object>();
+      Node contentNode = (Node) event.getData();
+      if (!contentNode.isNodeType("mix:referenceable")) {
+        // No need to index irreferanceable node   
+        return;
+      }
+      content.put("content", contentNode);
       if(CmsService.POST_CREATE_CONTENT_EVENT.equals(event.getEventName())) {
-        Map<String, Object> content = new HashMap<String, Object>();
-        Node contentNode = (Node) event.getData();
-        content.put("content", contentNode);
         SearchEntry searchEntry = new SearchEntry("content", contentNode.getPrimaryNodeType().getName().equals("nt:file") ? "file" : "document", contentNode.getUUID(), content);
         indexingService.add(searchEntry);
       } else if(CmsService.POST_EDIT_CONTENT_EVENT.equals(event.getEventName())) {
-        Map<String, Object> content = new HashMap<String, Object>();
-        Node contentNode = (Node) event.getData();
-        content.put("content", contentNode);
         SearchEntryId searchEntryId = new SearchEntryId("content", contentNode.getPrimaryNodeType().getName().equals("nt:file") ? "file" : "document", contentNode.getUUID());
         indexingService.update(searchEntryId, content);
       }
