@@ -198,7 +198,7 @@ public class UIDocActivityComposer extends UIActivityComposer implements UISelec
         }
         
         activityParams.put(UIDocActivity.ID, node.isNodeType(NodetypeConstant.MIX_REFERENCEABLE) ? node.getUUID() : "");       
-        activityParams.put(UIDocActivity.CONTENT_NAME, getDocNode(REPOSITORY, WORKSPACE, documentPath).getName());
+        activityParams.put(UIDocActivity.CONTENT_NAME, Utils.getTitle(getDocNode(REPOSITORY, WORKSPACE, documentPath)));
         activityParams.put(UIDocActivity.AUTHOR, activityOwnerId);
         activityParams.put(UIDocActivity.DATE_CREATED, strDateCreated);
         activityParams.put(UIDocActivity.LAST_MODIFIED, strLastModified);
