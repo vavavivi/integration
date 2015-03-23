@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ActivityTypeUtils;
 import org.exoplatform.commons.utils.ISO8601;
@@ -198,7 +199,7 @@ public class UIDocActivityComposer extends UIActivityComposer implements UISelec
         }
         
         activityParams.put(UIDocActivity.ID, node.isNodeType(NodetypeConstant.MIX_REFERENCEABLE) ? node.getUUID() : "");       
-        activityParams.put(UIDocActivity.CONTENT_NAME, Utils.getTitle(getDocNode(REPOSITORY, WORKSPACE, documentPath)));
+        activityParams.put(UIDocActivity.CONTENT_NAME, StringEscapeUtils.unescapeHtml(Utils.getTitle(getDocNode(REPOSITORY, WORKSPACE, documentPath))));
         activityParams.put(UIDocActivity.AUTHOR, activityOwnerId);
         activityParams.put(UIDocActivity.DATE_CREATED, strDateCreated);
         activityParams.put(UIDocActivity.LAST_MODIFIED, strLastModified);
