@@ -222,11 +222,11 @@ public class UnifiedSearchService implements ResourceContainer {
   @SuppressWarnings("unchecked")
   private SearchSetting getSearchSetting() {
     try {
-      Long resultsPerPage = ((SettingValue<Long>)settingService.get(Context.USER, Scope.WINDOWS, "resultsPerPage")).getValue();
-      String searchTypes = ((SettingValue<String>) settingService.get(Context.USER, Scope.WINDOWS, "searchTypes")).getValue();      
-      Boolean searchCurrentSiteOnly = ((SettingValue<Boolean>) settingService.get(Context.USER, Scope.WINDOWS, "searchCurrentSiteOnly")).getValue();
-      Boolean hideSearchForm = ((SettingValue<Boolean>) settingService.get(Context.USER, Scope.WINDOWS, "hideSearchForm")).getValue();
-      Boolean hideFacetsFilter = ((SettingValue<Boolean>) settingService.get(Context.USER, Scope.WINDOWS, "hideFacetsFilter")).getValue();
+      Long resultsPerPage = ((SettingValue<Long>)settingService.get(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage")).getValue();
+      String searchTypes = ((SettingValue<String>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchTypes")).getValue();
+      Boolean searchCurrentSiteOnly = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchCurrentSiteOnly")).getValue();
+      Boolean hideSearchForm = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "hideSearchForm")).getValue();
+      Boolean hideFacetsFilter = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "hideFacetsFilter")).getValue();
       
       return new SearchSetting(resultsPerPage, Arrays.asList(searchTypes.split(",\\s*")), searchCurrentSiteOnly, hideSearchForm, hideFacetsFilter);
     } catch (Exception e) {
@@ -258,11 +258,11 @@ public class UnifiedSearchService implements ResourceContainer {
   @POST
   @Path("/setting")
   public Response REST_setSearchSetting(@FormParam("resultsPerPage") long resultsPerPage, @FormParam("searchTypes") String searchTypes, @FormParam("searchCurrentSiteOnly") boolean searchCurrentSiteOnly, @FormParam("hideSearchForm") boolean hideSearchForm, @FormParam("hideFacetsFilter") boolean hideFacetsFilter) {
-    settingService.set(Context.USER, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(resultsPerPage));    
-    settingService.set(Context.USER, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
-    settingService.set(Context.USER, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(searchCurrentSiteOnly));
-    settingService.set(Context.USER, Scope.WINDOWS, "hideSearchForm", new SettingValue<Boolean>(hideSearchForm));
-    settingService.set(Context.USER, Scope.WINDOWS, "hideFacetsFilter", new SettingValue<Boolean>(hideFacetsFilter));
+    settingService.set(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(resultsPerPage));
+    settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
+    settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(searchCurrentSiteOnly));
+    settingService.set(Context.GLOBAL, Scope.WINDOWS, "hideSearchForm", new SettingValue<Boolean>(hideSearchForm));
+    settingService.set(Context.GLOBAL, Scope.WINDOWS, "hideFacetsFilter", new SettingValue<Boolean>(hideFacetsFilter));
     
     return Response.ok("ok", MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
   } 
@@ -306,7 +306,7 @@ public class UnifiedSearchService implements ResourceContainer {
   @POST
   @Path("/setting/quicksearch")
   public Response REST_setQuicksearchSetting(@FormParam("resultsPerPage") long resultsPerPage, @FormParam("searchTypes") String searchTypes, @FormParam("searchCurrentSiteOnly") boolean searchCurrentSiteOnly) {
-    settingService.set(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(resultsPerPage));    
+    settingService.set(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(resultsPerPage));
     settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
     settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(searchCurrentSiteOnly));
     return Response.ok("ok", MediaType.APPLICATION_JSON).cacheControl(cacheControl).build();
