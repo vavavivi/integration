@@ -26,5 +26,3 @@ import juzu.plugin.binding.Bindings;
 import juzu.plugin.portlet.Portlet;
 
 import org.exoplatform.commons.api.settings.SettingService;
-
-

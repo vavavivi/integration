@@ -124,7 +124,6 @@ window.initQuickSearch = function initQuickSearch(portletId,seeAllMsg, noResultM
 	        </tr> \
         </table> \
       ";       
-     
     //*** Utility functions ***
     
     String.prototype.toProperCase = function() {

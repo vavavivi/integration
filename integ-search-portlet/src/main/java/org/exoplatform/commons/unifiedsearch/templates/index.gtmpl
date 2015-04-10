@@ -64,6 +64,6 @@
 
 <script>
 window.require(["PORTLET/unified-search/UnifiedsearchPortlet"], function() {
-  initSearch(); 
+  initSearch();
 });  
 </script>

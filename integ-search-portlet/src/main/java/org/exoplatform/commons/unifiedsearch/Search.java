@@ -61,7 +61,7 @@ public class Search {
   
   @Inject
   SettingService settingService;
-  
+
   @Inject
   ResourceBundle bundle;    
 

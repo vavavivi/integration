@@ -30,7 +30,6 @@ import juzu.template.Template;
 import javax.inject.Inject;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -57,11 +56,11 @@ public class QuickSearch {
   Template edit;
   
   @Inject
-  PortletPreferences portletPreferences;
+  PortletPreferences portletPreferences;  
   
   @Inject
   SettingService settingService;
-  
+
   @Inject
   ResourceBundle bundle;  
 
