@@ -258,6 +258,9 @@ public class UnifiedSearchService implements ResourceContainer {
   @POST
   @Path("/setting")
   public Response REST_setSearchSetting(@FormParam("resultsPerPage") long resultsPerPage, @FormParam("searchTypes") String searchTypes, @FormParam("searchCurrentSiteOnly") boolean searchCurrentSiteOnly, @FormParam("hideSearchForm") boolean hideSearchForm, @FormParam("hideFacetsFilter") boolean hideFacetsFilter) {
+    if (settingService.get(Context.USER, Scope.WINDOWS, "firstInitialization") == null) {
+      settingService.set(Context.USER, Scope.WINDOWS, "firstInitialization", new SettingValue<Boolean>(true));
+    }
     settingService.set(Context.USER, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(resultsPerPage));    
     settingService.set(Context.USER, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
     settingService.set(Context.USER, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(searchCurrentSiteOnly));
@@ -306,6 +309,9 @@ public class UnifiedSearchService implements ResourceContainer {
   @POST
   @Path("/setting/quicksearch")
   public Response REST_setQuicksearchSetting(@FormParam("resultsPerPage") long resultsPerPage, @FormParam("searchTypes") String searchTypes, @FormParam("searchCurrentSiteOnly") boolean searchCurrentSiteOnly) {
+    if (settingService.get(Context.GLOBAL, Scope.WINDOWS, "firstInitialization") == null) {
+      settingService.set(Context.GLOBAL, Scope.WINDOWS, "firstInitialization", new SettingValue<Boolean>(true));
+    }
     settingService.set(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(resultsPerPage));    
     settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
     settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(searchCurrentSiteOnly));

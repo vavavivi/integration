@@ -30,9 +30,15 @@ import juzu.template.Template;
 import javax.inject.Inject;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import org.exoplatform.commons.api.settings.SettingService;
+import org.exoplatform.commons.api.settings.SettingValue;
+import org.exoplatform.commons.api.settings.data.Context;
+import org.exoplatform.commons.api.settings.data.Scope;
 
 /**
  * Created by The eXo Platform SAS
@@ -51,31 +57,32 @@ public class QuickSearch {
   Template edit;
   
   @Inject
-  PortletPreferences portletPreferences;  
+  PortletPreferences portletPreferences;
+  
+  @Inject
+  SettingService settingService;
   
   @Inject
   ResourceBundle bundle;  
 
-  static boolean firstInit = true;
   
   @View
   public Response.Content index(RequestContext requestContext){
     Map<String, Object> parameters = new HashMap<String, Object>();
     QuickSearch_.index().setProperty(JuzuPortlet.PORTLET_MODE, PortletMode.EDIT);
     PortletMode mode = requestContext.getProperty(JuzuPortlet.PORTLET_MODE);
-    parameters.put("firstInit", firstInit);
-    if (firstInit) firstInit = false;
     if (PortletMode.EDIT == mode){
       return edit.ok(parameters);
     }else {
-
-      String resultsPerPage = portletPreferences.getValue("resultsPerPage", "5");
-      String searchTypes = portletPreferences.getValue("searchTypes", "all");
-      String searchCurrentSiteOnly = portletPreferences.getValue("searchCurrentSiteOnly", "true");
-      
-      parameters.put("resultsPerPage", resultsPerPage);
-      parameters.put("searchTypes", searchTypes);
-      parameters.put("searchCurrentSiteOnly", searchCurrentSiteOnly);      
+      if (settingService.get(Context.GLOBAL, Scope.WINDOWS, "firstInitialization") == null) {
+        settingService.set(Context.GLOBAL, Scope.WINDOWS, "firstInitialization", new SettingValue<Boolean>(true));
+        String resultsPerPage = portletPreferences.getValue("resultsPerPage", "5");
+        String searchTypes = portletPreferences.getValue("searchTypes", "all");
+        String searchCurrentSiteOnly = portletPreferences.getValue("searchCurrentSiteOnly", "true");
+        settingService.set(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(Long.parseLong(resultsPerPage)));    
+        settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
+        settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(Boolean.parseBoolean(searchCurrentSiteOnly)));        
+      }
       return index.ok(parameters);
     }
   }  
