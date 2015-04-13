@@ -71,23 +71,38 @@ public class Search {
     
     Search_.index().setProperty(JuzuPortlet.PORTLET_MODE, PortletMode.EDIT);
     PortletMode mode = requestContext.getProperty(JuzuPortlet.PORTLET_MODE);
+    
+    SettingValue<?> resultsPerPageSettingValue = settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_resultsPerPage");
+    if (resultsPerPageSettingValue == null) {
+      String resultsPerPage = portletPreferences.getValue("resultsPerPage", "10");
+      settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchResult_resultsPerPage", new SettingValue<Long>(Long.parseLong(resultsPerPage)));
+    }
+    SettingValue<?> searchTypesSettingValue = settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_searchTypes");
+    if (searchTypesSettingValue == null) {
+      String searchTypes = portletPreferences.getValue("searchTypes", "all");
+      settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchResult_searchTypes", new SettingValue<String>(searchTypes));
+    }
+
+    SettingValue<?> searchCurrentSiteOnlySettingValue = settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_searchCurrentSiteOnly");
+    if (searchCurrentSiteOnlySettingValue == null) {
+      String searchCurrentSiteOnly = portletPreferences.getValue("searchCurrentSiteOnly", "false");
+      settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchResult_searchCurrentSiteOnly", new SettingValue<Boolean>(Boolean.parseBoolean(searchCurrentSiteOnly)));
+    }
+
+    SettingValue<?> hideSearchFormSettingValue = settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_hideSearchForm");
+    if (hideSearchFormSettingValue == null) {
+      String hideSearchForm = portletPreferences.getValue("hideSearchForm", "false");
+      settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchResult_hideSearchForm", new SettingValue<Boolean>(Boolean.parseBoolean(hideSearchForm)));
+    }
+
+    SettingValue<?> hideFacetsFilterSettingValue = settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_hideFacetsFilter");
+    if (hideFacetsFilterSettingValue == null) {
+      String hideFacetsFilter = portletPreferences.getValue("hideFacetsFilter", "false");
+      settingService.set(Context.GLOBAL, Scope.WINDOWS, "searchResult_hideFacetsFilter", new SettingValue<Boolean>(Boolean.parseBoolean(hideFacetsFilter)));
+    }
     if (PortletMode.EDIT == mode){
       return edit.ok(parameters);
     } else {
-      if (settingService.get(Context.USER, Scope.WINDOWS, "firstInitialization") == null) {
-        String resultsPerPage = portletPreferences.getValue("resultsPerPage", "10");
-        String searchTypes = portletPreferences.getValue("searchTypes", "all");
-        String searchCurrentSiteOnly = portletPreferences.getValue("searchCurrentSiteOnly", "false");
-        String hideSearchForm = portletPreferences.getValue("hideSearchForm", "false");
-        String hideFacetsFilter = portletPreferences.getValue("hideFacetsFilter", "false");
-        settingService.set(Context.USER, Scope.WINDOWS, "firstInitialization", new SettingValue<Boolean>(true));
-        settingService.set(Context.USER, Scope.WINDOWS, "resultsPerPage", new SettingValue<Long>(Long.parseLong(resultsPerPage)));
-        settingService.set(Context.USER, Scope.WINDOWS, "searchTypes", new SettingValue<String>(searchTypes));
-        settingService.set(Context.USER, Scope.WINDOWS, "searchCurrentSiteOnly", new SettingValue<Boolean>(Boolean.parseBoolean(searchCurrentSiteOnly)));
-        settingService.set(Context.USER, Scope.WINDOWS, "hideSearchForm", new SettingValue<Boolean>(Boolean.parseBoolean(hideSearchForm)));
-        settingService.set(Context.USER, Scope.WINDOWS, "hideFacetsFilter", new SettingValue<Boolean>(Boolean.parseBoolean(hideFacetsFilter)));
-      }
-      
       return index.ok(parameters);
     }
   }  
