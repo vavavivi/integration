@@ -17,7 +17,7 @@ function initSearchAdmin() {
       $.each(connectors, function(searchType, connector){
         $("#searchAdmin table").append(row_template.replace(/%{id}/g, connector.searchType).replace(/%{key}/g,eXo.ecm.WCMUtils.getBundle('SearchAdmin.action.Enable', eXo.env.portal.language))
                                                   .replace(/%{displayName}/g, eXo.ecm.WCMUtils.getBundle("SearchAdmin.type." + connector.displayName , eXo.env.portal.language))
-                                                  .replace(/%{description}/g, connector.description));
+                                                  .replace(/%{description}/g, eXo.ecm.WCMUtils.getBundle("SearchAdmin.type." + connector.displayName + ".description", eXo.env.portal.language)));
       });
 
       $.each(searchTypes, function(i, type){
@@ -29,7 +29,7 @@ function initSearchAdmin() {
 
     $(".contentType").live("click", function(){
       if("Enable"==$(this).attr("name")) {
-        $(this).attr("name","Disable");;
+        $(this).attr("name","Disable");
         $(this).val(eXo.ecm.WCMUtils.getBundle("SearchAdmin.action.Disable", eXo.env.portal.language));
         //$(this).next().attr("disabled", false);
       } else {
