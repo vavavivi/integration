@@ -96,7 +96,7 @@
   </ElementSet>
   <UIPreviewCommentArea>
     <label>
-      <commentTextAreaPreview>Add your comment...</commentTextAreaPreview>
+      <commentTextAreaPreview>Pridėti savo komentarą...</commentTextAreaPreview>
       <no-comment-yet>No comment yet</no-comment-yet>
     </label>
   </UIPreviewCommentArea>
