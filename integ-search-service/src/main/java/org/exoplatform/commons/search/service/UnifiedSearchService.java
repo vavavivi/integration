@@ -226,31 +226,31 @@ public class UnifiedSearchService implements ResourceContainer {
       Long resultsPerPage = ((SettingValue<Long>)settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_resultsPerPage")).getValue();
       newSearchSetting.setResultsPerPage(resultsPerPage);
     } catch(Exception e) {
-      LOG.info("Cannot get searchResult_resultsPerPage parameter for search settings. Use default one instead", e);
+      LOG.info("Cannot get searchResult_resultsPerPage parameter for search settings. Use default one instead");
     }
     try {
       String searchTypes = ((SettingValue<String>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_searchTypes")).getValue();
       newSearchSetting.setSearchTypes(Arrays.asList(searchTypes.split(",\\s*")));
     } catch (Exception e) {
-      LOG.info("Cannot get searchResult_searchTypes parameter for search settings. Use default one instead", e);
+      LOG.info("Cannot get searchResult_searchTypes parameter for search settings. Use default one instead");
     }
     try {
       Boolean searchCurrentSiteOnly = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_searchCurrentSiteOnly")).getValue();
       newSearchSetting.setSearchCurrentSiteOnly(searchCurrentSiteOnly);
     } catch (Exception e) {
-      LOG.info("Cannot get searchResult_searchCurrentSiteOnly parameter for search settings. Use default one instead", e);
+      LOG.info("Cannot get searchResult_searchCurrentSiteOnly parameter for search settings. Use default one instead");
     }
     try {
       Boolean hideSearchForm = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_hideSearchForm")).getValue();
       newSearchSetting.setHideSearchForm(hideSearchForm);
     } catch (Exception e) {
-      LOG.info("Cannot get searchResult_hideSearchForm parameter for search settings. Use default one instead", e);
+      LOG.info("Cannot get searchResult_hideSearchForm parameter for search settings. Use default one instead");
     }
     try {
       Boolean hideFacetsFilter = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchResult_hideFacetsFilter")).getValue();
       newSearchSetting.setHideFacetsFilter(hideFacetsFilter);
     } catch (Exception e) {
-      LOG.info("Cannot get searchResult_hideFacetsFilter parameter for search settings. Use default one instead", e);
+      LOG.info("Cannot get searchResult_hideFacetsFilter parameter for search settings. Use default one instead");
     }
     return newSearchSetting;
   }
@@ -296,19 +296,19 @@ public class UnifiedSearchService implements ResourceContainer {
       Long resultsPerPage = ((SettingValue<Long>)settingService.get(Context.GLOBAL, Scope.WINDOWS, "resultsPerPage")).getValue();
       newSearchSetting.setResultsPerPage(resultsPerPage);
     } catch(Exception e) {
-      LOG.info("Cannot get resultsPerPage parameter for quick search settings. Use default one instead", e);
+      LOG.info("Cannot get resultsPerPage parameter for quick search settings. Use default one instead");
     }
     try {
       String searchTypes = ((SettingValue<String>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchTypes")).getValue();
       newSearchSetting.setSearchTypes(Arrays.asList(searchTypes.split(",\\s*")));
     } catch (Exception e) {
-      LOG.info("Cannot get searchTypes parameter for quick search settings. Use default one instead", e);
+      LOG.info("Cannot get searchTypes parameter for quick search settings. Use default one instead");
     }
     try {
       Boolean searchCurrentSiteOnly = ((SettingValue<Boolean>) settingService.get(Context.GLOBAL, Scope.WINDOWS, "searchCurrentSiteOnly")).getValue();
       newSearchSetting.setSearchCurrentSiteOnly(searchCurrentSiteOnly);
     } catch (Exception e) {
-      LOG.info("Cannot get searchCurrentSiteOnly parameter for quick search settings. Use default one instead", e);
+      LOG.info("Cannot get searchCurrentSiteOnly parameter for quick search settings. Use default one instead");
     }
     return newSearchSetting;
   }
