@@ -34,6 +34,8 @@ import org.exoplatform.wiki.utils.Utils;
 import org.xwiki.rendering.syntax.Syntax;
 
 import javax.jcr.Node;
+
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,6 +122,13 @@ public class WikiSpaceActivityPublisher extends PageWikiListener {
     templateParams.put(PAGE_TYPE_KEY, wikiType);
     templateParams.put(PAGE_TITLE_KEY, page.getTitle());
     String pageURL = (page.getURL() == null) ? (spaceUrl != null ? (spaceUrl + "/" + WIKI_PAGE_NAME) : "") : page.getURL();
+    String pageIdEncoded = "";
+    try {
+      pageIdEncoded = URLEncoder.encode(pageId, "UTF-8");
+    }catch (Exception e){
+      LOG.info("cannot encode page's url", e);
+    }
+    pageURL = pageURL.substring(0, pageURL.lastIndexOf('/')+1) + pageIdEncoded;
     templateParams.put(URL_KEY, pageURL);
     int versionsTotal = page.getVersionableMixin().getVersionHistory().getChildren().size() - 1;
     templateParams.put(WIKI_PAGE_VERSION, String.valueOf(versionsTotal));
