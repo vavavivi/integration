@@ -2,13 +2,13 @@
 <bundle>
   <UIConfirmMessage>
     <label>
-      <ReadOnly>Open Read-only</ReadOnly>
+      <ReadOnly>crwdns6812307:0crwdne6812307:0</ReadOnly>
     </label>
   </UIConfirmMessage>
 
   <UISocialPopupWindow>
     <title>
-      <UIReadOnlyFileConfirmMessage>Open Document</UIReadOnlyFileConfirmMessage>
+      <UIReadOnlyFileConfirmMessage>crwdns6812308:0crwdne6812308:0</UIReadOnlyFileConfirmMessage>
     </title>
   </UISocialPopupWindow>
   <SocialIntegration>
@@ -84,7 +84,7 @@
   <UIPopupWindow>
     <title>
       <DocViewer>crwdns6789867:0crwdne6789867:0</DocViewer>
-      <UIReadOnlyFileConfirmMessage>Open Document</UIReadOnlyFileConfirmMessage>
+      <UIReadOnlyFileConfirmMessage>crwdns6812309:0crwdne6812309:0</UIReadOnlyFileConfirmMessage>
     </title>
   </UIPopupWindow>
   <ElementSet>
@@ -96,8 +96,8 @@
   </ElementSet>
   <UIPreviewCommentArea>
     <label>
-      <commentTextAreaPreview>Add your comment...</commentTextAreaPreview>
-      <no-comment-yet>No comment yet</no-comment-yet>
+      <commentTextAreaPreview>crwdns6812310:0crwdne6812310:0</commentTextAreaPreview>
+      <no-comment-yet>crwdns6812311:0crwdne6812311:0</no-comment-yet>
     </label>
   </UIPreviewCommentArea>
 
@@ -113,7 +113,7 @@
 
   <UIPopupMenu>
     <msg>
-      <lock-node-read-only>This file is locked by user {0}. Open read only?</lock-node-read-only>
+      <lock-node-read-only>crwdns6812317:0{0}crwdne6812317:0</lock-node-read-only>
     </msg>
   </UIPopupMenu>
 </bundle>
