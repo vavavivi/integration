@@ -40,7 +40,7 @@
             <%
             } else {
                 if (isWebContent) {%>
-                    <div class="uiPreviewWebContent">
+                    <div class="uiPreviewWebContent content-display">
                 <%
                 }
                       uicomponent.renderChild(org.exoplatform.social.plugin.doc.UIDocViewer);
